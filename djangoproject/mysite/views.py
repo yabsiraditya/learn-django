@@ -1,8 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-def index(request):
-    return render(request, 'index.html')
 
-# def about(request):
-#     return HttpResponse("<h1>Ini Adalah Halaman about</h1>")
+# life views project
+
+def index(request):
+    context = {
+        'title':'Web Developer',
+        'hero':'Web Developer Full Stack',
+        'developer':'Yabsir Aditya'
+    }
+    return render(request, 'index.html', context)

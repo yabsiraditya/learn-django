@@ -1,9 +1,26 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return render(request, 'blog.html')
+    context = {
+        'title':'Blogspot',
+        'hero':'Blog Saya',
+        'developer':'Budi',
+    }
+    return render(request, 'blog/index.html', context)
 
-def search(request):
-    return HttpResponse("<h1>Ini Adalah Halaman Cari</h1>")
+def artikel(request):
+    context = {
+        'title':'artikel',
+        'hero':'artikel Saya',
+        'developer':'asep',
+    }
+    return render(request, 'blog/index.html', context)
+
+def berita(request):
+    context = {
+        'title':'berita',
+        'hero':'berita Saya',
+        'developer':'ucup',
+    }
+    return render(request, 'blog/index.html', context)
