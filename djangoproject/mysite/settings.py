@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog', # for production use blog.apps.BlogConfig
-    'contact', # for production use contact.apps.contact
 ]
 
 MIDDLEWARE = [

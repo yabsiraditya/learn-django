@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{title}} | {{developer}}</title>
-    </head>
-    <body>
-        <h1>Selamat Datang Di {{hero}} </h1>
-        <h3>Developer : {{developer}} </h3>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/blog">Blog</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <ul>
-                <li><a href="/blog/artikel">Artikel</a></li>
-                <li><a href="/blog/berita">Berita</a></li>
-            </ul>
-        </ul>
-    </body>
-    </html>
+{% extends "base.html" %}
+
+{% block content %}
+{% include "blog/snippets/navbar.html" %}
+    <h1>Selamat Datang Di {{hero}} </h1>
+    <h3>Developer : {{developer}} </h3>
+{% endblock content %}

@@ -6,6 +6,12 @@ def index(request):
         'title':'Blogspot',
         'hero':'Blog Saya',
         'developer':'Budi',
+        'nav':[
+            ['/','Home'],
+            ['/blog','Blog'],
+            ['artikel/','Artikel'],
+            ['berita/','Berita'],
+        ]
     }
     return render(request, 'blog/index.html', context)
 
