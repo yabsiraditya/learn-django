@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 {% include "blog/snippets/navbar.html" %}
+    <img src="{% static 'blog/images/blog.png' %}" alt="blog" width="100%">
     <h1>Selamat Datang Di {{hero}} </h1>
     <h3>Developer : {{developer}} </h3>
 {% endblock content %}

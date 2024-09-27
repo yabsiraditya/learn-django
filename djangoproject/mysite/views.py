@@ -6,8 +6,13 @@ from django.shortcuts import render
 
 def index(request):
     context = {
-        'title':'Web Developer',
-        'hero':'Web Developer Full Stack',
-        'developer':'Yabsir Aditya'
+        'title':'My Portofolio',
+        'hero':'Selamat Data Di Web Portfolio Saya, Terima Kasih!',
+        'nav':[
+            ['/','Home'],
+            ['/blog','Blog'],
+            ['/contact','Contact'],
+        ],
+        'banner':'images/beranda.png'
     }
     return render(request, 'index.html', context)
