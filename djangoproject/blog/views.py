@@ -9,24 +9,26 @@ def index(request):
         'nav':[
             ['/','Home'],
             ['/blog','Blog'],
-            ['artikel/','Artikel'],
-            ['berita/','Berita'],
-        ]
+            ['/contact','Contact'],
+            # ['artikel/','Artikel'],
+            # ['berita/','Berita'],
+        ],
+        'banner':'blog/images/blog.png'
     }
-    return render(request, 'blog/index.html', context)
+    return render(request, 'index.html', context)
 
-def artikel(request):
-    context = {
-        'title':'artikel',
-        'hero':'artikel Saya',
-        'developer':'asep',
-    }
-    return render(request, 'blog/index.html', context)
+# def artikel(request):
+#     context = {
+#         'title':'artikel',
+#         'hero':'artikel Saya',
+#         'developer':'asep',
+#     }
+#     return render(request, 'index.html', context)
 
-def berita(request):
-    context = {
-        'title':'berita',
-        'hero':'berita Saya',
-        'developer':'ucup',
-    }
-    return render(request, 'blog/index.html', context)
+# def berita(request):
+#     context = {
+#         'title':'berita',
+#         'hero':'berita Saya',
+#         'developer':'ucup',
+#     }
+#     return render(request, 'index.html', context)

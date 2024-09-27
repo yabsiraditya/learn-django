@@ -1,5 +1,15 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head_title %}
+    {{title}}
+{% endblock head_title %}
+
 {% block content %}
     {% include "snippets/navbar.html" %}
-    <h1>Selamat Datang Di {{hero}} </h1>
-    <h3>Developer : {{developer}} </h3>
+
+    <img src="{% static banner %}" alt="banner" width="100%">
+
+    <h1>{{hero}}</h1>
 {% endblock content %}
