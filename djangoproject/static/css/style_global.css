@@ -1,0 +1,35 @@
+* {
+    font-family: "Nunito";
+}
+
+h2 {
+    margin: 10px;
+}
+
+nav ul {
+    background-color: lightgray;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    border-radius: 50px;
+}
+
+nav li {
+    float: left;
+}
+
+nav a {
+    display: block;
+    color: black;
+    padding: 20px;
+    text-decoration: none;
+}
+
+nav a:hover{
+    opacity: 50%;
+}
+
+#banner {
+    width: 100%;
+}

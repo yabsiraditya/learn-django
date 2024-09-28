@@ -9,7 +9,7 @@
 {% block content %}
     {% include "snippets/navbar.html" %}
 
-    <img src="{% static banner %}" alt="banner" width="100%">
+    <img id="banner" src="{% static banner %}" alt="banner">
 
-    <h1>{{hero}}</h1>
+    <h2>{{hero}}</h2>
 {% endblock content %}

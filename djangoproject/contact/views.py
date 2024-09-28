@@ -12,5 +12,6 @@ def index(request):
             ['/contact','Contact'],
         ],
         'banner':'contact/images/kontak.png',
+        'css_apps':'contact/css/style_contact.css'
     }
     return render(request, 'index.html', context)

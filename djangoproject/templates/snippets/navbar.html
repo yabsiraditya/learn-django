@@ -1,7 +1,9 @@
 {% block navbar %}
+    <nav>
         <ul>
             {% for link,name in nav %}
             <li><a href="{{link}}">{{name}}</a></li>
             {% endfor %}
         </ul>
+    </nav>
 {% endblock navbar %}

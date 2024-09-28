@@ -4,8 +4,7 @@ from django.shortcuts import render
 def index(request):
     context = {
         'title':'Blogspot',
-        'hero':'Blog Saya',
-        'developer':'Budi',
+        'hero':'Ini Adalah Halaman Blog Saya',
         'nav':[
             ['/','Home'],
             ['/blog','Blog'],
@@ -13,7 +12,8 @@ def index(request):
             # ['artikel/','Artikel'],
             # ['berita/','Berita'],
         ],
-        'banner':'blog/images/blog.png'
+        'banner':'blog/images/blog.png',
+        'css_apps':'blog/css/style_blog.css'
     }
     return render(request, 'index.html', context)
 
