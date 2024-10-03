@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog'
+    'blog',
+    'kontak',
 ]
 
 MIDDLEWARE = [
@@ -88,9 +89,17 @@ DATABASES = {
         'HOST': '/var/run/mysqld/mysqld.sock',
         'PORT': '3306',
     },
+        'db_kontak': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_kontak',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'HOST': '/var/run/mysqld/mysqld.sock',
+        'PORT': '3306',
+    },
 }
 
-DATABASE_ROUTERS = ["routers.db_routers.AuthRouter", "routers.db_routers.Blog"]
+DATABASE_ROUTERS = ["routers.db_routers.AuthRouter", "routers.db_routers.Blog", "routers.db_routers.Kontak"]
 
 
 # Password validation
