@@ -14,6 +14,7 @@ class Artikel(models.Model):
     pilih_kategori = models.ForeignKey(
         Kategori, on_delete=models.CASCADE, default=0
     )
+    tanggal_publik = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.id} {self.judul}"
