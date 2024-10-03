@@ -5,7 +5,7 @@ class Kategori(models.Model):
     nama = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.nama
+        return f"{self.id} {self.nama}"
     
 
 class Artikel(models.Model):
@@ -16,4 +16,4 @@ class Artikel(models.Model):
     )
 
     def __str__(self):
-        return self.judul
+        return f"{self.id} {self.judul}"
