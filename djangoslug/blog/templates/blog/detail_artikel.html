@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{title}}{% endblock head_title %}
+
+{% block contents %}
+    <h1>{{headline}}</h1>
+
+    <div>
+        <h3>{{articles.judul}}</h3>
+        <span>Kategori : {{articles.kategori}},</span>
+        <span>Pada : {{articles.pubdate}}</span>
+        <p>{{articles.isi}}</p>
+    </div>
+{% endblock contents %}
