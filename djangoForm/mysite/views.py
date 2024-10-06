@@ -1,15 +1,14 @@
 from django.shortcuts import render
 
+from .forms import FormsFields
+
 def index(request):
+    form_fields = FormsFields()
 
     context = {
         'title':'Home',
         'heading':'Django Forms',
+        'form_fields': form_fields,
     }
-
-    if request.method == 'POST':
-        context['nama'] = request.POST['nama']
-        context['email'] = request.POST['email']
-        context['pesan'] = request.POST['pesan']
 
     return render(request, 'index.html', context)
