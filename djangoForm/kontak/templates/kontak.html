@@ -7,7 +7,8 @@
 
     <form action="" method="POST">
         {% csrf_token %}
-        {{form_fields.as_div}}
+        {{kontak_forms.as_p}}
         <button type="submit">Kirim</button>
     </form>
+
 {% endblock contents %}
