@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+    {{title}}
+{% endblock head_title %}
+
+{% block contents %}
+    <h1>{{heading}}</h1>
+
+    {% for kontak in contacts %}
+        <h3>{{kontak.name}}</h3>
+        <p>{{kontak.email}}</p>
+        <p>{{kontak.message}}</p>
+    {% endfor %}
+{% endblock contents %}
