@@ -15,12 +15,14 @@ def index(request):
         context['nama'] = request.POST['nama']
         context['email'] = request.POST['email']
         context['no_telp'] = request.POST['no_telp']
-        context['tgl_lahir'] = request.POST['tgl_lahir_day']
-        context['tgl_lahir'] = request.POST['tgl_lahir_month']
-        context['tgl_lahir'] = request.POST['tgl_lahir_year']
+        context['tgl_lahir_day'] = request.POST['tgl_lahir_day']
+        context['tgl_lahir_month'] = request.POST['tgl_lahir_month']
+        context['tgl_lahir_year'] = request.POST['tgl_lahir_year']
         context['jenkel'] = request.POST['jenkel']
         context['subjek'] = request.POST['subjek']
         context['pesan'] = request.POST['pesan']
         context['alamat'] = request.POST['alamat']
+
+    print(request.POST)
 
     return render(request, 'kontak.html', context)
