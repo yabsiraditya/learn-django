@@ -20,8 +20,8 @@ def createArticle(request):
         if form.is_valid():
             form.save()
             return redirect('blog:index')
-        else:
-            form = ArticleForm()
+    else:
+        form = ArticleForm()
 
     context = {
         'title':'Halaman Create Article',
