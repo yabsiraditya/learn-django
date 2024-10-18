@@ -8,7 +8,7 @@
 {% block contents %}
     <h1>{{heading}}</h1>
     <a class="btn btn-success my-3" href="{% url 'pulangpergi:create' %}">Tambah Data</a>
-    <table class="table">
+    <table class="table text-center">
         <thead>
         <tr>
             <th scope="col">No</th>
@@ -26,7 +26,8 @@
             <td>{{destination.nameDriver}}</td>
             <td>{{destination.destination}}</td>
             <td>
-                <a class="btn btn-danger" href="{% url 'pulangpergi:delete' destination.slug %}"><i class="bi bi-trash"></i></a>
+                <a class="btn btn-danger text-black" href="{% url 'pulangpergi:delete' destination.slug %}"><i class="bi bi-trash"></i></a>
+                <a class="btn btn-warning text-black" href="{% url 'pulangpergi:update' destination.slug %}"><i class="bi bi-pencil"></i></a>
             </td>
         </tr>
         {% endfor %}

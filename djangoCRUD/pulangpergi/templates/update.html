@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+    {{title}}
+{% endblock head_title %}
+
+
+{% block contents %}
+    <h1>{{heading}}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                {{field}}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock contents %}
