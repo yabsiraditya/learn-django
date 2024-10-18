@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head_title %}
+    {{title}}
+{% endblock head_title %}
+
+
+{% block contents %}
+    <h1>{{heading}}</h1>
+    <a class="btn btn-success my-3" href="{% url 'pulangpergi:create' %}">Tambah Data</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">Nama Pelanggan</th>
+            <th scope="col">Nama Pengemudi</th>
+            <th scope="col">Tujuan</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for destination in allDestination %}
+        <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{destination.nameCustomer}}</td>
+            <td>{{destination.nameDriver}}</td>
+            <td>{{destination.destination}}</td>
+            <td>
+                <a class="btn btn-danger" href="{% url 'pulangpergi:delete' destination.slug %}"><i class="bi bi-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock contents %}
