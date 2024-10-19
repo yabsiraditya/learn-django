@@ -7,11 +7,16 @@
 
 {% block contents %}
     <h1>{{heading}}</h1>
+
     <a class="btn btn-success my-3" href="{% url 'pulangpergi:create' %}">Tambah Data</a>
+
+    {% include 'snippets/message.html' %}
+
     <table class="table text-center">
         <thead>
         <tr>
             <th scope="col">No</th>
+            <th scope="col">Profile</th>
             <th scope="col">Nama Pelanggan</th>
             <th scope="col">Nama Pengemudi</th>
             <th scope="col">Tujuan</th>
@@ -22,6 +27,9 @@
         {% for destination in allDestination %}
         <tr>
             <th scope="row">{{forloop.counter}}</th>
+            <td>
+                <img width="84" src="{{destination.profile.url}}" alt="destination.nameCustomer">
+            </td>
             <td>{{destination.nameCustomer}}</td>
             <td>{{destination.nameDriver}}</td>
             <td>{{destination.destination}}</td>
