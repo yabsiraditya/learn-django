@@ -7,6 +7,7 @@ class Destination(models.Model):
     nameCustomer = models.CharField(max_length=50)
     nameDriver = models.CharField(max_length=50)
     destination = models.TextField()
+    profile = models.ImageField(blank=True, default='profile.png')
     slug = models.SlugField(blank=True, editable=False)
 
     def save(self, *args, **kwargs):

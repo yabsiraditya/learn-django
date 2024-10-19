@@ -8,7 +8,9 @@
 {% block contents %}
     <h1>{{heading}}</h1>
 
-    <form method="post">
+    {% include 'snippets/message.html' %}
+
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
             <div class="mb-3">

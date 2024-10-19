@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect ,get_object_or_404
+from django.contrib import messages
 
 # import models
 from .models import Destination
@@ -20,6 +21,7 @@ def index(request):
 
 def delete(request, nameSlug):
     Destination.objects.filter(slug=nameSlug).delete()
+    messages.success(request, 'Data berhasil dihapus')
     return redirect('pulangpergi:index')
 
 def update(request, nameSlug):
@@ -28,9 +30,10 @@ def update(request, nameSlug):
     objDestination = get_object_or_404(Destination, slug=nameSlug)
 
     if request.method == 'POST':
-        form = DestinationForm(request.POST or None, instance=objDestination)
+        form = DestinationForm(request.POST or None, request.FILES or None, instance=objDestination)
         if form.is_valid():
             form.save()
+            messages.warning(request, 'Data berhasil diupdate')
             return redirect('pulangpergi:index')
     else:
         form = DestinationForm(instance=objDestination)
@@ -45,9 +48,10 @@ def update(request, nameSlug):
 
 def addDestination(request):
     if request.method == 'POST':
-        form = DestinationForm(request.POST or None)
+        form = DestinationForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Data berhasil ditambahkan')
             return redirect('pulangpergi:index')
     else:
         form = DestinationForm()
