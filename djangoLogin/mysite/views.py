@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
+from .forms import RegisterUserForm
+
 
 def index(request):
     context = {
@@ -9,6 +11,27 @@ def index(request):
     }
 
     return render(request, 'index.html', context)
+
+
+def register_user(request):
+    if request.method == 'POST':
+        register_user = RegisterUserForm(request.POST or None)
+        if register_user.is_valid():
+            messages.success(request, 'Berhasil Registrasi Akun')
+            register_user.save()
+            return redirect('login')
+        else:
+            messages.error(request, 'Gagal Registrasi Akun!')
+    else:
+        register_user = RegisterUserForm()
+
+    context = {
+        'title':'Register User',
+        'form':register_user,
+
+    }
+
+    return render(request, 'register.html', context)
 
 
 def login_user(request):
