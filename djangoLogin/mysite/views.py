@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .forms import RegisterUserForm
@@ -14,6 +15,10 @@ def index(request):
 
 
 def register_user(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('index')
+
     if request.method == 'POST':
         register_user = RegisterUserForm(request.POST or None)
         if register_user.is_valid():
@@ -39,6 +44,10 @@ def login_user(request):
         'title':'login',
     }
 
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('index')
+
     if request.method == 'POST':
         username_input = request.POST['username']
         password_input = request.POST['password']
@@ -55,11 +64,15 @@ def login_user(request):
 
     return render(request, 'login.html', context) 
 
-
+@login_required(login_url='/')
 def logout_user(request):
     context = {
         'title':'logout',
     }
+
+    # if request.method == 'GET':
+    #     if not request.user.is_authenticated:
+    #         return redirect('index')
 
     if request.method == 'POST':
         if request.POST['logout'] == 'Logout':
