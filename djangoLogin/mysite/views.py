@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm, ChangePasswordUserForm
 
 
 def index(request):
@@ -86,18 +86,38 @@ def logout_user(request):
 
     return render(request, 'logout.html', context) 
 
+# @login_required(login_url='/')
+# def change_password_user(request):
+#     pilih_user = User.objects.get(username=request.user)
+#     if request.method == 'POST':
+#         password = request.POST['password']
+#         pilih_user.set_password(password)
+#         pilih_user.save()
+#         messages.info(request, 'Anda Berhasil Ubah Password')
+#         return redirect('index')
 
-def change_password_user(request):
-    pilih_user = User.objects.get(username=request.user)
+#     context = {
+#         'title':'Ubah Password',
+#     }
+
+#     return render(request, 'changePassword.html', context)
+
+@login_required(login_url='/')
+def change_password(request):
+    form = ChangePasswordUserForm(request.user, request.POST or None)
+
     if request.method == 'POST':
-        password = request.POST['password']
-        pilih_user.set_password(password)
-        pilih_user.save()
-        messages.info(request, 'Anda Berhasil Ubah Password')
-        return redirect('index')
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+        else:
+            return redirect('changepassword1')
+    else:
+        form = ChangePasswordUserForm(request.user)
 
     context = {
-        'title':'Ubah Password',
+        'title':'Change Password',
+        'form':form,
     }
 
-    return render(request, 'changePassword.html', context)
+    return render(request, 'changePassword1.html', context)

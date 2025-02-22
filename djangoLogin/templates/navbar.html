@@ -1,7 +1,8 @@
 <ul>
     {% if request.user.is_authenticated %}
         <li><a href="{% url "index" %}">Beranda</a></li>
-        <li><a href="{% url "changepassword" %}">Change Password</a></li>
+        {% comment %} <li><a href="{% url "changepassword" %}">Change Password</a></li> {% endcomment %}
+        <li><a href="{% url "changepassword1" %}">Change Password1</a></li>
         <li><a href="{% url "logout" %}">Logout</a></li>
     {% else %}
         <li><a href="{% url "index" %}">Beranda</a></li>
