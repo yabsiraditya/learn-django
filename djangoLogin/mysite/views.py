@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 from .forms import RegisterUserForm
 
@@ -84,3 +85,19 @@ def logout_user(request):
             return redirect('logout')
 
     return render(request, 'logout.html', context) 
+
+
+def change_password_user(request):
+    pilih_user = User.objects.get(username=request.user)
+    if request.method == 'POST':
+        password = request.POST['password']
+        pilih_user.set_password(password)
+        pilih_user.save()
+        messages.info(request, 'Anda Berhasil Ubah Password')
+        return redirect('index')
+
+    context = {
+        'title':'Ubah Password',
+    }
+
+    return render(request, 'changePassword.html', context)
