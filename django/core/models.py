@@ -32,9 +32,14 @@ class WorkshopRepair(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bikeworkshop = models.ForeignKey(WorkshopRepair, on_delete=models.CASCADE)
+    workshoprepair = models.ForeignKey(WorkshopRepair, on_delete=models.CASCADE)
     rating = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return f"Rating: {self.rating}"
     
+
+class Sale(models.Model):
+    workshoprepair = models.ForeignKey(WorkshopRepair, on_delete=models.SET_NULL, null=True)
+    income = models.DecimalField(max_digits=12, decimal_places=2)
+    datetime = models.DateTimeField()
