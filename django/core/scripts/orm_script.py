@@ -1,6 +1,7 @@
-from core.models import WorkshopRepair, User, Rating
+from core.models import WorkshopRepair, User, Rating, Sale
 from django.utils import timezone
 from django.db import connection
+from pprint import pprint
 
 def run():
     
@@ -34,5 +35,46 @@ def run():
     #     rating=4,
     # )
 
-    print(Rating.objects.exclude(rating__lte=3))
-    print(connection.queries)
+    # print(Rating.objects.exclude(rating__lte=3))
+
+    # workshoprepair = WorkshopRepair.objects.first()
+    # print(workshoprepair.name)
+
+    # workshoprepair.name = "Astra Honda Motor Cibinong"
+    # workshoprepair.save()
+
+    # rating = Rating.objects.first()
+    # print(rating.workshoprepair.name)
+
+    # workshoprepair = WorkshopRepair.objects.first()
+    # print(workshoprepair.sales.all())
+
+    # Sale.objects.create(
+    #     workshoprepair=WorkshopRepair.objects.first(),
+    #     income=1.33,
+    #     datetime=timezone.now(),
+    # )
+
+    user = User.objects.first()
+    workshoprepair = WorkshopRepair.objects.first()
+
+    rating = Rating(
+        user=user,
+        workshoprepair=workshoprepair,
+        rating=9,
+    )
+
+    rating.full_clean()
+    rating.save()
+
+    # rating, created = Rating.objects.get_or_create(
+    #     workshoprepair=workshoprepair,
+    #     user=user,
+    #     rating=3,
+    # )
+
+    # if created:
+    #     # send email
+    #     pass
+
+    pprint(connection.queries)
