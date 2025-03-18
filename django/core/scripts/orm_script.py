@@ -55,17 +55,17 @@ def run():
     #     datetime=timezone.now(),
     # )
 
-    user = User.objects.first()
-    workshoprepair = WorkshopRepair.objects.first()
+    # user = User.objects.first()
+    # workshoprepair = WorkshopRepair.objects.first()
 
-    rating = Rating(
-        user=user,
-        workshoprepair=workshoprepair,
-        rating=9,
-    )
+    # rating = Rating(
+    #     user=user,
+    #     workshoprepair=workshoprepair,
+    #     rating=9,
+    # )
 
-    rating.full_clean()
-    rating.save()
+    # rating.full_clean()
+    # rating.save()
 
     # rating, created = Rating.objects.get_or_create(
     #     workshoprepair=workshoprepair,
@@ -76,5 +76,57 @@ def run():
     # if created:
     #     # send email
     #     pass
+    
+    # workshoprepair = WorkshopRepair.objects.first()
+    # print(workshoprepair.name)
 
+    # workshoprepair.name = 'Astra Honda Motor Cibinong'
+    # workshoprepair.save()
+
+    # workshoprepair = WorkshopRepair()
+    # workshoprepair.name = 'Astra Honda Motor Cibinong #2'
+    # workshoprepair.date_opened = timezone.now()
+    # workshoprepair.workshop_type = WorkshopRepair.TypeWorkshop.MOTORCYCLE
+    # workshoprepair.latitude = 50.2
+    # workshoprepair.longitude= 50.2
+    # workshoprepair.save()
+
+    # workshoprepair = WorkshopRepair.objects.filter(name__startswith='A')
+    # print(workshoprepair)
+
+    # print(workshoprepair.update(
+    #     date_opened=timezone.now() - timezone.timedelta(days=365),
+    #     website='https://github.com/yabsiraditya'
+    # ))
+
+    # workshoprepair = WorkshopRepair.objects.first()
+    # print(workshoprepair.delete())
+
+
+    # WorkshopRepair.objects.all().delete()
+
+    # print(WorkshopRepair.objects.count())
+    # print(Rating.objects.count())
+    # print(Sale.objects.count())
+
+    # filter car WorkshopRepair
+
+    # workshoprepair = WorkshopRepair.objects.filter(workshop_type=WorkshopRepair.TypeWorkshop.CAR)
+    # workshoprepair = WorkshopRepair.objects.filter(name='ajskdhjkashjksd')
+    # workshoprepair = WorkshopRepair.objects.filter(name__contains='astra')
+    # print(workshoprepair)
+    # print(workshoprepair.exists())
+    # print(workshoprepair.get())
+
+    # motorcycle = WorkshopRepair.TypeWorkshop.MOTORCYCLE
+    # workshoprepair = WorkshopRepair.objects.filter(workshop_type=motorcycle, name__startswith='A')
+    # car = WorkshopRepair.TypeWorkshop.CAR
+    # bustruck = WorkshopRepair.TypeWorkshop.BUSTRUCK
+    # check_types = [car, bustruck]
+    # workshoprepair = WorkshopRepair.objects.filter(workshop_type__in=check_types)
+
+    # workshoprepair = WorkshopRepair.objects.exclude(workshop_type__in=[motorcycle, car])
+    # workshoprepair = WorkshopRepair.objects.filter(name__lt='R')
+    workshoprepair = WorkshopRepair.objects.filter(name__gt='R')
+    print(workshoprepair)
     pprint(connection.queries)
