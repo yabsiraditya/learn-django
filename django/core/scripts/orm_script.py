@@ -103,7 +103,30 @@ def run():
     # print(workshoprepair.delete())
 
 
-    WorkshopRepair.objects.all().delete()
+    # WorkshopRepair.objects.all().delete()
 
+    # print(WorkshopRepair.objects.count())
+    # print(Rating.objects.count())
+    # print(Sale.objects.count())
 
+    # filter car WorkshopRepair
+
+    # workshoprepair = WorkshopRepair.objects.filter(workshop_type=WorkshopRepair.TypeWorkshop.CAR)
+    # workshoprepair = WorkshopRepair.objects.filter(name='ajskdhjkashjksd')
+    # workshoprepair = WorkshopRepair.objects.filter(name__contains='astra')
+    # print(workshoprepair)
+    # print(workshoprepair.exists())
+    # print(workshoprepair.get())
+
+    # motorcycle = WorkshopRepair.TypeWorkshop.MOTORCYCLE
+    # workshoprepair = WorkshopRepair.objects.filter(workshop_type=motorcycle, name__startswith='A')
+    # car = WorkshopRepair.TypeWorkshop.CAR
+    # bustruck = WorkshopRepair.TypeWorkshop.BUSTRUCK
+    # check_types = [car, bustruck]
+    # workshoprepair = WorkshopRepair.objects.filter(workshop_type__in=check_types)
+
+    # workshoprepair = WorkshopRepair.objects.exclude(workshop_type__in=[motorcycle, car])
+    # workshoprepair = WorkshopRepair.objects.filter(name__lt='R')
+    workshoprepair = WorkshopRepair.objects.filter(name__gt='R')
+    print(workshoprepair)
     pprint(connection.queries)
