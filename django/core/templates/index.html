@@ -2,10 +2,14 @@
 
 {% block content %}
 
-<form method="post">
+{% comment %} <form method="post">
     {% csrf_token %}
     {{form.as_p}}
     <button type="submit">Submit</button>
-</form>
+</form> {% endcomment %}
+
+{% comment %} {% for ratings in ratings %}
+    <p>{{ratings.workshoprepair.name}} - {{ratings.rating}}</p>
+{% endfor %} {% endcomment %}
 
 {% endblock %}
