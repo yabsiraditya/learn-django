@@ -2,13 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
+from django.db.models.functions import Lower
+
 
 # Create your models here.
-
 
 # BikeWorkshop
 # User
 # Rating
+
 
 def validator_workshoprepair_name_begins_with_a(value):
     if not value.startswith('a'):
@@ -42,6 +44,10 @@ class WorkshopRepair(models.Model):
         max_length=2,
         choices=TypeWorkshop.choices,
     )
+
+    class Meta:
+        ordering = [Lower('name')]
+        get_latest_by = 'date_opened'
 
     def __str__(self):
         return self.name
