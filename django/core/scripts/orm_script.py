@@ -2,6 +2,7 @@ from core.models import WorkshopRepair, User, Rating, Sale
 from django.utils import timezone
 from django.db import connection
 from pprint import pprint
+from django.db.models.functions import Lower
 
 def run():
     
@@ -127,6 +128,24 @@ def run():
 
     # workshoprepair = WorkshopRepair.objects.exclude(workshop_type__in=[motorcycle, car])
     # workshoprepair = WorkshopRepair.objects.filter(name__lt='R')
-    workshoprepair = WorkshopRepair.objects.filter(name__gt='R')
-    print(workshoprepair)
+    # workshoprepair = WorkshopRepair.objects.filter(name__gt='R')
+
+    # sales = Sale.objects.filter(income__range=(50, 60))
+    # print([sale.income for sale in sales])
+
+    # workshoprepair = WorkshopRepair.objects.order_by('name')
+    # workshoprepair = WorkshopRepair.objects.order_by('-name') #Reverse
+    # sales = Sale.objects.order_by('-datetime')
+
+    # workshoprepair = WorkshopRepair.objects.order_by('date_opened')[2:5]
+    # workshoprepair = WorkshopRepair.objects.latest()
+
+    # Find all rating associated with a workshoprepair begining with 'A'.
+    # ratings = Rating.objects.filter(workshoprepair__name__startswith='A')
+
+    car = WorkshopRepair.TypeWorkshop.CAR
+    sales = Sale.objects.filter(workshoprepair__workshop_type=car)
+
+    print(sales)
+
     pprint(connection.queries)
