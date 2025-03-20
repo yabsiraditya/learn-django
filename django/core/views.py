@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .forms import RatingForm, WorkshopForm
-from core.models import WorkshopRepair, Sale, Rating
+from core.models import WorkshopRepair, Sale, Rating, StaffWorkshoprepair
 from django.db.models import Sum, Prefetch
 from django.utils import timezone
 
@@ -19,14 +19,20 @@ def index(request):
 
     # ratings = Rating.objects.only('rating', 'workshoprepair__name').select_related('workshoprepair')
 
-    month_ago = timezone.now() - timezone.timedelta(days=30)
-    monthly_sales = Prefetch(
-            'sales',
-            queryset=Sale.objects.filter(datetime__gte=month_ago)
-        )
-    workshoprepair = WorkshopRepair.objects.prefetch_related('ratings', monthly_sales).filter(ratings__rating=5)
-    workshoprepair = workshoprepair.annotate(total=Sum('sales__income'))
-    # context = {'workshoprepairs': workshoprepair}
-    print([r.total for r in workshoprepair])
+    # month_ago = timezone.now() - timezone.timedelta(days=30)
+    # monthly_sales = Prefetch(
+    #         'sales',
+    #         queryset=Sale.objects.filter(datetime__gte=month_ago)
+    #     )
+    # workshoprepair = WorkshopRepair.objects.prefetch_related('ratings', monthly_sales).filter(ratings__rating=5)
+    # workshoprepair = workshoprepair.annotate(total=Sum('sales__income'))
+    # # context = {'workshoprepairs': workshoprepair}
+    # print([r.total for r in workshoprepair])
+
+    jobs = StaffWorkshoprepair.objects.prefetch_related('staff', 'workshoprepair')
+
+    for job in jobs:
+        print(job.workshoprepair.name)
+        print(job.staff.name)
 
     return render(request, 'index.html')

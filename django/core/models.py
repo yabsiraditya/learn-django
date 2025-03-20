@@ -57,6 +57,19 @@ class WorkshopRepair(models.Model):
         super().save(*args, **kwargs)
 
 
+class Staff(models.Model):
+    name = models.CharField(max_length=120)
+    workshoprepairs = models.ManyToManyField(WorkshopRepair, through='StaffWorkshoprepair')
+
+    def __str__(self):
+        return self.name
+    
+class StaffWorkshoprepair(models.Model):
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    workshoprepair = models.ForeignKey(WorkshopRepair, on_delete=models.CASCADE)
+    salary = models.FloatField(null=True)
+
+
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     workshoprepair = models.ForeignKey(WorkshopRepair, on_delete=models.CASCADE, related_name='ratings')

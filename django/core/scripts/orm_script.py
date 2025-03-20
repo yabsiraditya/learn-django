@@ -1,8 +1,9 @@
-from core.models import WorkshopRepair, User, Rating, Sale
+from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshoprepair
 from django.utils import timezone
 from django.db import connection
 from pprint import pprint
 from django.db.models.functions import Lower
+import random
 
 def run():
     
@@ -143,9 +144,52 @@ def run():
     # Find all rating associated with a workshoprepair begining with 'A'.
     # ratings = Rating.objects.filter(workshoprepair__name__startswith='A')
 
-    car = WorkshopRepair.TypeWorkshop.CAR
-    sales = Sale.objects.filter(workshoprepair__workshop_type=car)
+    # car = WorkshopRepair.TypeWorkshop.CAR
+    # sales = Sale.objects.filter(workshoprepair__workshop_type=car)
 
-    print(sales)
+    # print(sales)
 
-    pprint(connection.queries)
+    # pprint(connection.queries)
+
+
+    staff, created = Staff.objects.get_or_create(
+        name='John Dhoe'
+    )
+
+    staff.workshoprepairs.set(
+        WorkshopRepair.objects.all()[:5],
+        through_defaults={'salary':random.randint(20_000, 80_000)}
+    )
+
+    # workshoprepair = WorkshopRepair.objects.first()
+
+    # staff.workshoprepairs.add(workshoprepair, through_defaults={'salary': 28_000})
+
+    # StaffWorkshoprepair.objects.create(
+    #     staff=staff,
+    #     workshoprepair=workshoprepair,
+    #     salary=28_000
+    # )
+
+    # StaffWorkshoprepair.objects.create(
+    #     staff=staff,
+    #     workshoprepair=workshoprepair2,
+    #     salary=24_000
+    # )
+
+    # staff_workshoprepair = StaffWorkshoprepair.objects.filter(staff=staff)
+
+    # for w in staff_workshoprepair:
+    #     print(w.salary)
+
+    # print(staff.workshoprepairs.all())
+    # add, all, count, remove, set, claer, create, filter
+    # staff.workshoprepairs.set(WorkshopRepair.objects.all()[:5])
+    # staff.workshoprepairs.clear()
+    # car = staff.workshoprepairs.filter(workshop_type=WorkshopRepair.TypeWorkshop.CAR)
+    # print(car)
+    # print(staff.workshoprepairs.count())
+
+    # workshoprepair = WorkshopRepair.objects.get(pk=10)
+
+    # print(workshoprepair.staff_set.all())
