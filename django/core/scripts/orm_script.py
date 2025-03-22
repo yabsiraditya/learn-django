@@ -2,7 +2,7 @@ from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshop
 from django.utils import timezone
 from django.db import connection
 from pprint import pprint
-from django.db.models.functions import Lower
+from django.db.models.functions import Lower, Upper
 import random
 
 def run():
@@ -152,14 +152,14 @@ def run():
     # pprint(connection.queries)
 
 
-    staff, created = Staff.objects.get_or_create(
-        name='John Dhoe'
-    )
+    # staff, created = Staff.objects.get_or_create(
+    #     name='John Dhoe'
+    # )
 
-    staff.workshoprepairs.set(
-        WorkshopRepair.objects.all()[:5],
-        through_defaults={'salary':random.randint(20_000, 80_000)}
-    )
+    # staff.workshoprepairs.set(
+    #     WorkshopRepair.objects.all()[:5],
+    #     through_defaults={'salary':random.randint(20_000, 80_000)}
+    # )
 
     # workshoprepair = WorkshopRepair.objects.first()
 
@@ -193,3 +193,10 @@ def run():
     # workshoprepair = WorkshopRepair.objects.get(pk=10)
 
     # print(workshoprepair.staff_set.all())
+
+    # workshoprepair = WorkshopRepair.objects.values(name_upper=Upper('name'))[:3]
+    
+    BT = WorkshopRepair.TypeWorkshop.BUSTRUCK
+    rating = Rating.objects.filter(workshoprepair__workshop_type=BT).values('rating', 'workshoprepair__name')
+
+    print(rating)
