@@ -2,7 +2,8 @@ from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshop
 from django.utils import timezone
 from django.db import connection
 from pprint import pprint
-from django.db.models.functions import Lower, Upper
+from django.db.models.functions import Lower, Upper, Length, Concat
+from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value
 import random
 
 def run():
@@ -196,7 +197,63 @@ def run():
 
     # workshoprepair = WorkshopRepair.objects.values(name_upper=Upper('name'))[:3]
     
-    BT = WorkshopRepair.TypeWorkshop.BUSTRUCK
-    rating = Rating.objects.filter(workshoprepair__workshop_type=BT).values('rating', 'workshoprepair__name')
+    # BT = WorkshopRepair.TypeWorkshop.BUSTRUCK
+    # rating = Rating.objects.filter(workshoprepair__workshop_type=BT).values('rating', 'workshoprepair__name')
 
-    print(rating)
+    # workshoprepairs = WorkshopRepair.objects.values_list('name', flat=True)
+
+    # one_month_ago = timezone.now() - timezone.timedelta(days=31)
+
+    # print(WorkshopRepair.objects.aggregate(total=Count('id')))
+    # print(Rating.objects.filter(workshoprepair__name__startswith='H').aggregate(avg=Avg('rating')))
+    # print(Sale.objects.filter(datetime__gte=one_month_ago).aggregate(
+    #     min=Min('income'),
+    #     max=Max('income'),
+    #     avg=Avg('income'),
+    #     sum=Sum('income'),
+    #     )
+    # )
+
+    # fetch all workshoprepair, and let's assume we want 
+    # to get the number of characters in the name of the workshoprepair. so 'xyz' == 3.
+
+    # workshoprepair = WorkshopRepair.objects.annotate(len_name=Length('name')).filter(
+    #     len_name__gte=30
+    # )
+    # print(workshoprepair.values('name', 'len_name'))
+
+    # Workshoprepair 1 [Rating : 3.1]
+    # conncatenation = Concat(
+    #     'name', Value(' [Rating: '), Avg('ratings__rating'), Value(']'),
+    #     output_field=CharField()
+    # )
+
+    # workshoprepair = WorkshopRepair.objects.annotate(message=conncatenation)
+    # for w in workshoprepair:
+    #     print(w.message)
+
+    # workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).values(
+    #     'name', 'total_sales'
+    # )
+    # print([w['total_sales'] for w in workshoprepair])
+
+    # workshoprepair = WorkshopRepair.objects.annotate(
+    #     num_ratings=Count('ratings'),
+    #     avg_rating=Avg('ratings__rating')
+    # )
+    # print(workshoprepair.values('name', 'num_ratings', 'avg_rating'))
+
+    # workshoprepair = WorkshopRepair.objects.values('workshop_type').annotate(
+    #     num_ratings=Count('ratings'),
+    # )
+
+    # workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).order_by('total_sales')
+    workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).filter(total_sales__lte=500)
+    print(workshoprepair.aggregate(av_sales=Avg('total_sales')))
+    # for r in workshoprepair:
+    #     print(f'{r.name} = {r.total_sales}')
+
+    # print(workshoprepair)
+
+    pprint(connection.queries)
+    # print(workshoprepairs)
