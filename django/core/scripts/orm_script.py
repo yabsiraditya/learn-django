@@ -277,13 +277,52 @@ def run():
     # )
     # print(sales)
 
-    rating = Rating.objects.first()
-    print(rating.rating)
-    rating.rating = F('rating') - 1
-    rating.save()
+    # rating = Rating.objects.first()
+    # print(rating.rating)
+    # rating.rating = F('rating') + 2
+    # rating.save()
 
-    rating.refresh_from_db()
+    # rating.refresh_from_db()
 
-    print(rating.rating)
+    # print(rating.rating)
 
-    # pprint(connection.queries)
+    # get all Motorcycle and Car workshop
+    # mc=WorkshopRepair.TypeWorkshop.MOTORCYCLE
+    # bt=WorkshopRepair.TypeWorkshop.BUSTRUCK
+
+    # print(WorkshopRepair.objects.filter(
+    #     Q(workshop_type=mc) | Q(workshop_type=bt)
+    # ))
+
+    # find workshoprepair that have the number 1 in the name:
+    # icontains, endswith, startswith
+    # print(
+    #     WorkshopRepair.objects.filter(name__startswith="H")
+    # )
+
+    # workshoprepair name contains either the word "Motorcycle" OR the word "Bus Truck"
+    # hi_or_ho = Q(name__icontains="Hino") | Q(name__icontains="Honda")
+    # recently_opened = Q(date_opened__gt=timezone.now() - timezone.timedelta(days=40))
+    # not_recently_opened = ~Q(date_opened__gt=timezone.now() - timezone.timedelta(days=40))
+
+    # workshoprepairs = WorkshopRepair.objects.filter(hi_or_ho | not_recently_opened
+    # )
+    
+    # we want to find all sales where:
+    #   - profit is greater than expenditure 
+    #   - workshop name contains a number
+
+    name_has_num = Q(workshoprepair__name__regex=r"[A]+")
+    profited = Q(income__gt=F('expenditure'))
+
+    sales1 = Sale.objects.filter(name_has_num & profited)
+    sales2 = Sale.objects.filter(name_has_num | profited)
+    sales = Sale.objects.select_related('workshoprepair').filter(name_has_num | profited)
+
+    print(sales)
+
+    # for sale in sales:
+    #     if sale.income <= sale.expenditure:
+    #         print(sale.workshoprepair.name)
+
+    pprint(connection.queries)
