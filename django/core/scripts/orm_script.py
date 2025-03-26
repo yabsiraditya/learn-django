@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db import connection
 from pprint import pprint
 from django.db.models.functions import Lower, Upper, Length, Concat
-from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value
+from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q
 import random
 
 def run():
@@ -248,12 +248,81 @@ def run():
     # )
 
     # workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).order_by('total_sales')
-    workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).filter(total_sales__lte=500)
-    print(workshoprepair.aggregate(av_sales=Avg('total_sales')))
+    # workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).filter(total_sales__lte=500)
+    # print(workshoprepair.aggregate(av_sales=Avg('total_sales')))
     # for r in workshoprepair:
     #     print(f'{r.name} = {r.total_sales}')
 
     # print(workshoprepair)
 
+    # rating = Rating.objects.filter(rating=3).first()
+    # Rating.objects.update(rating=F('rating') / 2)
+    # update this rating by 1
+    # rating.rating = F('rating') + 1
+    # rating.save()
+    # sales = Sale.objects.all()
+
+    # for sale in sales:
+    #     sale.expenditure = random.uniform(5, 100)
+
+    # Sale.objects.bulk_update(sales, ['expenditure'])
+
+    # sales = Sale.objects.filter(expenditure__gt=F('income'))
+    # sales = Sale.objects.annotate(
+    #     profit= F('income') - F('expenditure')
+    # ).order_by('-profit')
+    # sales = Sale.objects.aggregate(
+    #     profit=Count('id', filter=Q(income__gt=F('expenditure'))),
+    #     loss=Count('id', filter=Q(income__lt=F('expenditure'))),
+    # )
+    # print(sales)
+
+    # rating = Rating.objects.first()
+    # print(rating.rating)
+    # rating.rating = F('rating') + 2
+    # rating.save()
+
+    # rating.refresh_from_db()
+
+    # print(rating.rating)
+
+    # get all Motorcycle and Car workshop
+    # mc=WorkshopRepair.TypeWorkshop.MOTORCYCLE
+    # bt=WorkshopRepair.TypeWorkshop.BUSTRUCK
+
+    # print(WorkshopRepair.objects.filter(
+    #     Q(workshop_type=mc) | Q(workshop_type=bt)
+    # ))
+
+    # find workshoprepair that have the number 1 in the name:
+    # icontains, endswith, startswith
+    # print(
+    #     WorkshopRepair.objects.filter(name__startswith="H")
+    # )
+
+    # workshoprepair name contains either the word "Motorcycle" OR the word "Bus Truck"
+    # hi_or_ho = Q(name__icontains="Hino") | Q(name__icontains="Honda")
+    # recently_opened = Q(date_opened__gt=timezone.now() - timezone.timedelta(days=40))
+    # not_recently_opened = ~Q(date_opened__gt=timezone.now() - timezone.timedelta(days=40))
+
+    # workshoprepairs = WorkshopRepair.objects.filter(hi_or_ho | not_recently_opened
+    # )
+    
+    # we want to find all sales where:
+    #   - profit is greater than expenditure 
+    #   - workshop name contains a number
+
+    name_has_num = Q(workshoprepair__name__regex=r"[A]+")
+    profited = Q(income__gt=F('expenditure'))
+
+    sales1 = Sale.objects.filter(name_has_num & profited)
+    sales2 = Sale.objects.filter(name_has_num | profited)
+    sales = Sale.objects.select_related('workshoprepair').filter(name_has_num | profited)
+
+    print(sales)
+
+    # for sale in sales:
+    #     if sale.income <= sale.expenditure:
+    #         print(sale.workshoprepair.name)
+
     pprint(connection.queries)
-    # print(workshoprepairs)
