@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db import connection
 from pprint import pprint
 from django.db.models.functions import Lower, Upper, Length, Concat
-from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value
+from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q
 import random
 
 def run():
@@ -248,12 +248,42 @@ def run():
     # )
 
     # workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).order_by('total_sales')
-    workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).filter(total_sales__lte=500)
-    print(workshoprepair.aggregate(av_sales=Avg('total_sales')))
+    # workshoprepair = WorkshopRepair.objects.annotate(total_sales=Sum('sales__income')).filter(total_sales__lte=500)
+    # print(workshoprepair.aggregate(av_sales=Avg('total_sales')))
     # for r in workshoprepair:
     #     print(f'{r.name} = {r.total_sales}')
 
     # print(workshoprepair)
 
-    pprint(connection.queries)
-    # print(workshoprepairs)
+    # rating = Rating.objects.filter(rating=3).first()
+    # Rating.objects.update(rating=F('rating') / 2)
+    # update this rating by 1
+    # rating.rating = F('rating') + 1
+    # rating.save()
+    # sales = Sale.objects.all()
+
+    # for sale in sales:
+    #     sale.expenditure = random.uniform(5, 100)
+
+    # Sale.objects.bulk_update(sales, ['expenditure'])
+
+    # sales = Sale.objects.filter(expenditure__gt=F('income'))
+    # sales = Sale.objects.annotate(
+    #     profit= F('income') - F('expenditure')
+    # ).order_by('-profit')
+    # sales = Sale.objects.aggregate(
+    #     profit=Count('id', filter=Q(income__gt=F('expenditure'))),
+    #     loss=Count('id', filter=Q(income__lt=F('expenditure'))),
+    # )
+    # print(sales)
+
+    rating = Rating.objects.first()
+    print(rating.rating)
+    rating.rating = F('rating') - 1
+    rating.save()
+
+    rating.refresh_from_db()
+
+    print(rating.rating)
+
+    # pprint(connection.queries)

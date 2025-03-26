@@ -87,4 +87,5 @@ class Rating(models.Model):
 class Sale(models.Model):
     workshoprepair = models.ForeignKey(WorkshopRepair, on_delete=models.SET_NULL, null=True, related_name='sales')
     income = models.DecimalField(max_digits=12, decimal_places=2)
+    expenditure = models.DecimalField(max_digits=12, decimal_places=2)
     datetime = models.DateTimeField()
