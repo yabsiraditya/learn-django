@@ -2,7 +2,7 @@ from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshop
 from django.utils import timezone
 from django.db import connection
 from pprint import pprint
-from django.db.models.functions import Lower, Upper, Length, Concat
+from django.db.models.functions import Lower, Upper, Length, Concat, Coalesce
 from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q
 import random
 
@@ -312,17 +312,44 @@ def run():
     #   - profit is greater than expenditure 
     #   - workshop name contains a number
 
-    name_has_num = Q(workshoprepair__name__regex=r"[A]+")
-    profited = Q(income__gt=F('expenditure'))
+    # name_has_num = Q(workshoprepair__name__regex=r"[A]+")
+    # profited = Q(income__gt=F('expenditure'))
 
-    sales1 = Sale.objects.filter(name_has_num & profited)
-    sales2 = Sale.objects.filter(name_has_num | profited)
-    sales = Sale.objects.select_related('workshoprepair').filter(name_has_num | profited)
+    # sales1 = Sale.objects.filter(name_has_num & profited)
+    # sales2 = Sale.objects.filter(name_has_num | profited)
+    # sales = Sale.objects.select_related('workshoprepair').filter(name_has_num | profited)
 
-    print(sales)
+    # print(sales)
 
     # for sale in sales:
     #     if sale.income <= sale.expenditure:
     #         print(sale.workshoprepair.name)
+
+    # workshoprepair = WorkshopRepair.objects.first()
+    # workshoprepair2 = WorkshopRepair.objects.last()
+
+    # workshoprepair.capacity = 10
+    # workshoprepair2.capacity = 20
+    # workshoprepair.save()
+    # workshoprepair2.save()
+
+    # print(WorkshopRepair.objects.filter(capacity__isnull=False).count())
+    # print(WorkshopRepair.objects.filter(capacity__isnull=False).order_by('capacity').values('capacity'))
+
+    # print(WorkshopRepair.objects.aggregate(total_cap=Coalesce(Sum('capacity'), 0)))
+
+    # print(
+    #     Rating.objects.filter(rating__lte=0).aggregate(total=Coalesce(Avg('rating'), 0.0))
+    # )
+
+    w = WorkshopRepair.objects.first()
+    w.nickname = 'abcd'
+    w.save()
+
+    print(
+        WorkshopRepair.objects.annotate(
+            name_value=Coalesce(F('nickname'), F('name'))
+        ).values('name_value')
+    )
 
     pprint(connection.queries)

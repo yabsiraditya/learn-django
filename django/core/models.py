@@ -44,6 +44,8 @@ class WorkshopRepair(models.Model):
         max_length=2,
         choices=TypeWorkshop.choices,
     )
+    capacity = models.PositiveSmallIntegerField(null=True, blank=True)
+    nickname = models.CharField(max_length=200, null=True, blank=True)
 
     class Meta:
         ordering = [Lower('name')]
