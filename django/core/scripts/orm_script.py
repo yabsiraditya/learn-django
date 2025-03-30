@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.db import connection
 from pprint import pprint
 from django.db.models.functions import Lower, Upper, Length, Concat, Coalesce
-from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q, Case, When
+from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q, Case, When ,OuterRef, Subquery, Exists
 import random
 import itertools
 
@@ -382,67 +382,109 @@ def run():
     # workshoprepair has more than 1 rating
     
     # annotate workshoprepair with average rating and number of ratings
-    workshoprepairs = WorkshopRepair.objects.annotate(
-        avg=Avg('ratings__rating'),
-        num_ratings=Count('ratings__pk')
-    )
+    # workshoprepairs = WorkshopRepair.objects.annotate(
+    #     avg=Avg('ratings__rating'),
+    #     num_ratings=Count('ratings__pk')
+    # )
 
-    workshoprepairs = workshoprepairs.annotate(
-        rating_bucket=Case(
-            When(avg__gt=3.5, then=Value('Highly Rating')),
-            When(avg__range=(2.5, 3.5), then=Value('Average Rating')),
-            When(avg__lt=2.5, then=Value('Bad Rating')),
-        )
-    )
+    # workshoprepairs = workshoprepairs.annotate(
+    #     rating_bucket=Case(
+    #         When(avg__gt=3.5, then=Value('Highly Rating')),
+    #         When(avg__range=(2.5, 3.5), then=Value('Average Rating')),
+    #         When(avg__lt=2.5, then=Value('Bad Rating')),
+    #     )
+    # )
 
-    print(
-        workshoprepairs.filter(rating_bucket='Bad Rating')
-    )
+    # print(
+    #     workshoprepairs.filter(rating_bucket='Bad Rating')
+    # )
 
-    # assign a continent to each workshoprepair
-    types = WorkshopRepair.TypeWorkshop
-    wheels_2 = Q(workshop_type=types.MOTORCYCLE)
-    wheels_4 = Q(workshop_type=types.CAR) | Q(workshop_type=types.BUSTRUCK)
+    # # assign a continent to each workshoprepair
+    # types = WorkshopRepair.TypeWorkshop
+    # wheels_2 = Q(workshop_type=types.MOTORCYCLE)
+    # wheels_4 = Q(workshop_type=types.CAR) | Q(workshop_type=types.BUSTRUCK)
 
-    workshoprepairs = WorkshopRepair.objects.annotate(
-        continent=Case(
-            When(wheels_4, then=Value('4 Wheels')),
-            When(wheels_2, then=Value('2 Wheels')),
-            default=Value("N/A")
-        )
-    )
+    # workshoprepairs = WorkshopRepair.objects.annotate(
+    #     continent=Case(
+    #         When(wheels_4, then=Value('4 Wheels')),
+    #         When(wheels_2, then=Value('2 Wheels')),
+    #         default=Value("N/A")
+    #     )
+    # )
 
-    print(
-        workshoprepairs.filter(continent='2 Wheels')
-    )
+    # print(
+    #     workshoprepairs.filter(continent='2 Wheels')
+    # )
 
     # aggregating total sales over each 10 day period, starting from the first sale up until the last.
     # 1 - 10th
     # 11th - 20th
 
-    first_sale = Sale.objects.aggregate(first_sale_date=Min('datetime'))['first_sale_date']
-    last_sale = Sale.objects.aggregate(last_sale_date=Max('datetime'))['last_sale_date']
+    # first_sale = Sale.objects.aggregate(first_sale_date=Min('datetime'))['first_sale_date']
+    # last_sale = Sale.objects.aggregate(last_sale_date=Max('datetime'))['last_sale_date']
 
     # generate a list of dates, each 10 days apart.
-    dates = []
-    count = itertools.count()
+    # dates = []
+    # count = itertools.count()
 
-    while(dt := first_sale + timezone.timedelta(days=10*next(count))) <= last_sale:
-        dates.append(dt)
+    # while(dt := first_sale + timezone.timedelta(days=10*next(count))) <= last_sale:
+    #     dates.append(dt)
 
-    whens = [
-        When(datetime__range=(dt, dt+timezone.timedelta(days=10)), then=Value(dt.date()))
-        for dt in dates
-    ]
+    # whens = [
+    #     When(datetime__range=(dt, dt+timezone.timedelta(days=10)), then=Value(dt.date()))
+    #     for dt in dates
+    # ]
 
-    case = Case(
-        *whens,
-        output_field=CharField()
-    )
+    # case = Case(
+    #     *whens,
+    #     output_field=CharField()
+    # )
 
-    print(Sale.objects.annotate(
-        daterange=case
-    ).values('daterange').annotate(total_sales=Sum('income')))
+    # print(Sale.objects.annotate(
+    #     daterange=case
+    # ).values('daterange').annotate(total_sales=Sum('income')))
 
-    # pprint(dates)
-    pprint(connection.queries)
+    # sales1 = Sale.objects.filter(workshoprepair__workshop_type__in=['MC', 'BT'])
+    # workshoprepairs = WorkshopRepair.objects.filter(workshop_type__in=['MC', 'BT'])
+    # sales = Sale.objects.filter(workshoprepair__in=Subquery(workshoprepairs.values('pk')))
+
+    # print(len(sales))
+    # print(sales.values_list('workshoprepair__workshop_type').distinct())
+
+    # workshoprepairs = WorkshopRepair.objects.all()
+
+    # annotate each workshop with income generated from its MOST RECENT sale
+    # sales = Sale.objects.filter(workshoprepair=OuterRef('pk')).order_by('-datetime')
+    
+    # outer query
+    # workshoprepairs = workshoprepairs.annotate(
+    #     last_sale_income=Subquery(sales.values('income')[:1]),
+    #     last_sale_expenditure=Subquery(sales.values('expenditure')[:1]),
+    #     profit=F('last_sale_income') - F('last_sale_expenditure'),
+    # )
+    
+    # for workshoprepair in workshoprepairs:
+    #     print(F"{workshoprepair.name} | {workshoprepair.last_sale_income} | {workshoprepair.last_sale_expenditure} | {workshoprepair.profit}")
+
+    # filter to workshoprepairs that have any sales with income > 85
+    # workshoprepairs = WorkshopRepair.objects.filter(
+    #     Exists(Sale.objects.filter(workshoprepair=OuterRef('pk'), income__gt=95))
+    # )
+    # workshoprepairs = WorkshopRepair.objects.filter(
+    #     Exists(Rating.objects.filter(workshoprepair=OuterRef('pk'), rating=5))
+    # )
+
+    # print(workshoprepairs.count())
+
+    # ten_days_ago = timezone.now() - timezone.timedelta(days=10)
+
+    # get all workshoprepair with sales in the last day 5
+    # sales = Sale.objects.filter(workshoprepair=OuterRef('pk'), datetime__gte=ten_days_ago)
+
+    # workshoprepairs = WorkshopRepair.objects.filter(Exists(sales))
+
+    # print(workshoprepairs.count())
+
+    pass
+
+    # pprint(connection.queries)

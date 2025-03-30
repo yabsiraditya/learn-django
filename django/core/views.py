@@ -3,6 +3,7 @@ from .forms import RatingForm, WorkshopForm
 from core.models import WorkshopRepair, Sale, Rating, StaffWorkshoprepair
 from django.db.models import Sum, Prefetch
 from django.utils import timezone
+from core.forms import ProductOrderForm
 
 # Create your views here.
 def index(request):
@@ -36,3 +37,12 @@ def index(request):
         print(job.staff.name)
 
     return render(request, 'index.html')
+
+
+def order_product(request):
+    form = ProductOrderForm
+    context = {
+        'form':form
+    }
+
+    return render(request, 'order.html', context)
