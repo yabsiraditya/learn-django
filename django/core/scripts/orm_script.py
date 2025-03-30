@@ -476,13 +476,15 @@ def run():
 
     # print(workshoprepairs.count())
 
-    ten_days_ago = timezone.now() - timezone.timedelta(days=10)
+    # ten_days_ago = timezone.now() - timezone.timedelta(days=10)
 
     # get all workshoprepair with sales in the last day 5
-    sales = Sale.objects.filter(workshoprepair=OuterRef('pk'), datetime__gte=ten_days_ago)
+    # sales = Sale.objects.filter(workshoprepair=OuterRef('pk'), datetime__gte=ten_days_ago)
 
-    workshoprepairs = WorkshopRepair.objects.filter(Exists(sales))
-    
-    print(workshoprepairs.count())
+    # workshoprepairs = WorkshopRepair.objects.filter(Exists(sales))
 
-    pprint(connection.queries)
+    # print(workshoprepairs.count())
+
+    pass
+
+    # pprint(connection.queries)
