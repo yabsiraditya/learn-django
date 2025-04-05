@@ -1,11 +1,12 @@
-from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshoprepair
+from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshoprepair, Product
 from django.utils import timezone
-from django.db import connection
+from django.db import connection, transaction
 from pprint import pprint
 from django.db.models.functions import Lower, Upper, Length, Concat, Coalesce
 from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q, Case, When ,OuterRef, Subquery, Exists
 import random
 import itertools
+import time
 
 def run():
     
@@ -485,6 +486,8 @@ def run():
 
     # print(workshoprepairs.count())
 
-    pass
+    with transaction.atomic():
+        aerox = Product.objects.select_for_update().get(name='Yamaha Aerox 155 VVA')
+        time.sleep(60)
 
     # pprint(connection.queries)
