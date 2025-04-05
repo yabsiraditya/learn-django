@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RatingForm, WorkshopForm
-from core.models import WorkshopRepair, Sale, Rating, StaffWorkshoprepair
+from core.models import WorkshopRepair, Sale, Rating, StaffWorkshoprepair, Product
 from django.db.models import Sum, Prefetch
 from django.db import transaction
 from django.utils import timezone
@@ -50,6 +50,11 @@ def order_product(request):
         form = ProductOrderForm(request.POST)
         if form.is_valid():
             with transaction.atomic():
+                product = Product.objects.select_for_update().get(
+                    id=form.cleaned_data['product'].pk
+                )
+                import time
+                time.sleep(85)
                 order = form.save()
                 order.product.number_in_stock -= order.number_of_items
                 order.product.save()
