@@ -4,6 +4,7 @@ from django.db import connection, transaction
 from pprint import pprint
 from django.db.models.functions import Lower, Upper, Length, Concat, Coalesce
 from django.db.models import Count, Avg, Min, Max, Sum, StdDev, Variance, CharField, Value, F, Q, Case, When ,OuterRef, Subquery, Exists
+from django.contrib.contenttypes.models import ContentType
 import random
 import itertools
 import time
@@ -486,8 +487,29 @@ def run():
 
     # print(workshoprepairs.count())
 
-    with transaction.atomic():
-        aerox = Product.objects.select_for_update().get(name='Yamaha Aerox 155 VVA')
-        time.sleep(60)
+    # with transaction.atomic():
+    #     aerox = Product.objects.select_for_update().get(name='Yamaha Aerox 155 VVA')
+    #     time.sleep(60)
 
+    # content_type = ContentType.objects.filter(app_label='core')
+    # print([c.model for c in content_type])
+
+    content_type = ContentType.objects.get(
+        app_label='core',
+        model='workshoprepair'
+    )
+
+    workshoprepair_model = content_type.get_all_objects_for_this_type(name='Astra Honda Motor Cibinong')
+    
+    # print(workshoprepair_model)
+    for workshop in workshoprepair_model:
+        print(workshop)
+        print(workshop.latitude)
+
+
+    rating_content_type = ContentType.objects.get_for_model(Rating)
+    print(rating_content_type.app_label)
+
+    c = rating_content_type.model_class()
+    print(c.rating)
     # pprint(connection.queries)
