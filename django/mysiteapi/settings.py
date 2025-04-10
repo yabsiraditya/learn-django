@@ -77,14 +77,21 @@ WSGI_APPLICATION = 'mysiteapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'orm_series',
+#         'USER': 'postgres',
+#         'PASSWORD': 'test',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5454',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'orm_series',
-        'USER': 'postgres',
-        'PASSWORD': 'test',
-        'HOST': '127.0.0.1',
-        'PORT': '5454',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
