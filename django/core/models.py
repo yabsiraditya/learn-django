@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from django.db.models.functions import Lower
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.models import ContentType
 
 
 # Create your models here.
@@ -46,6 +48,7 @@ class WorkshopRepair(models.Model):
     )
     capacity = models.PositiveSmallIntegerField(null=True, blank=True)
     nickname = models.CharField(max_length=200, null=True, blank=True)
+    comments = GenericRelation("Comment", related_query_name='workshoprepair')
 
     class Meta:
         ordering = [Lower('name')]
@@ -81,6 +84,8 @@ class Rating(models.Model):
             MaxValueValidator(5)
         ]
     )
+    comments = GenericRelation("Comment")
+
 
     def __str__(self):
         return f"Rating: {self.rating}"
@@ -110,5 +115,8 @@ class Order(models.Model):
         return f"{self.number_of_items} x {self.product.name}"
     
 
-class DummyModel(models.Model):
-    name = models.CharField(max_length=128)
+class Comment(models.Model):
+    text = models.TextField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveSmallIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')

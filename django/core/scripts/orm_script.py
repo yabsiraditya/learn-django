@@ -1,4 +1,4 @@
-from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshoprepair, Product
+from core.models import WorkshopRepair, User, Rating, Sale, Staff, StaffWorkshoprepair, Product, Comment
 from django.utils import timezone
 from django.db import connection, transaction
 from pprint import pprint
@@ -494,22 +494,63 @@ def run():
     # content_type = ContentType.objects.filter(app_label='core')
     # print([c.model for c in content_type])
 
-    content_type = ContentType.objects.get(
-        app_label='core',
-        model='workshoprepair'
-    )
+    # content_type = ContentType.objects.get(
+    #     app_label='core',
+    #     model='workshoprepair'
+    # )
 
-    workshoprepair_model = content_type.get_all_objects_for_this_type(name='Astra Honda Motor Cibinong')
+    # workshoprepair_model = content_type.get_all_objects_for_this_type(name='Astra Honda Motor Cibinong')
     
     # print(workshoprepair_model)
-    for workshop in workshoprepair_model:
-        print(workshop)
-        print(workshop.latitude)
+    # for workshop in workshoprepair_model:
+    #     print(workshop)
+    #     print(workshop.latitude)
 
 
-    rating_content_type = ContentType.objects.get_for_model(Rating)
-    print(rating_content_type.app_label)
+    # rating_content_type = ContentType.objects.get_for_model(Rating)
+    # print(rating_content_type.app_label)
 
-    c = rating_content_type.model_class()
-    print(c.rating)
+    # c = rating_content_type.model_class()
+    # print(c.rating)
+
+
+    # comments = Comment.objects.all()
+    # for comment in comments:
+    #     print(f"{comment.content_object} | {comment.text}")
+    #     print(type(comment.content_object))
+
+    # comment = Comment.objects.first()
+
+    # print(comment.content_object)
+
+    # ctype = comment.content_type
+    # print(ctype)
+
+    # model = ctype.get_object_for_this_type(pk=comment.object_id)
+    # print(model)
+    # print(type(model))
+
+    # workshoprepair = WorkshopRepair.objects.get()
+    # comment = Comment.objects.create(text="Powerfull Services", content_object=workshoprepair)
+
+    # print(comment)
+    # print(comment.__dict__)
+
+    # workshoprepair = WorkshopRepair.objects.get(pk=3)
+    # comments = workshoprepair.comments.add(
+    #     Comment.objects.create(text="Good Job Jhon", content_object=workshoprepair)
+    # )
+    # print(workshoprepair.comments.count())
+    
+    # last_comment = workshoprepair.comments.last()
+    # workshoprepair.comments.remove(last_comment)
+    # print(workshoprepair.comments.count())
+
+    # print(comments)
+
+    comments = Comment.objects.filter(
+        workshoprepair__workshop_type=WorkshopRepair.TypeWorkshop.CAR
+    )
+    print(comments)
+
     # pprint(connection.queries)
