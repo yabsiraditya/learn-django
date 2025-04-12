@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db.models.functions import Lower
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 
 
 # Create your models here.
@@ -27,7 +28,10 @@ class WorkshopRepair(models.Model):
         OTHER = "OT", "Other"
 
 
-    name = models.CharField(max_length=100, validators=[validator_workshoprepair_name_begins_with_a])
+    name = models.CharField(
+        max_length=100, 
+        validators=[validator_workshoprepair_name_begins_with_a],
+    )
     website = models.URLField(default='')
     date_opened = models.DateField()
     latitude = models.FloatField(
@@ -53,6 +57,22 @@ class WorkshopRepair(models.Model):
     class Meta:
         ordering = [Lower('name')]
         get_latest_by = 'date_opened'
+        constraints = [
+            models.CheckConstraint(
+                name="validated_latitude",
+                check=Q(latitude__gte=-90, latitude__lte=90),
+                violation_error_message="Invalid Latitude"
+            ),
+            models.CheckConstraint(
+                name="validated_longitude",
+                check=Q(longitude__gte=-180, longitude__lte=180),
+                violation_error_message="Invalid Longitude"
+            ),
+            models.UniqueConstraint(
+                Lower('name'),
+                name="name_uniq_constraint",
+            )
+        ]
 
     def __str__(self):
         return self.name
@@ -89,6 +109,20 @@ class Rating(models.Model):
 
     def __str__(self):
         return f"Rating: {self.rating}"
+    
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                name='rating_value_validate',
+                check=Q(rating__gte=1, rating__lte=5),
+                violation_error_message="Rating Invalid: Must Fall Between 1 And 5."
+            ),
+            models.UniqueConstraint(
+                fields=['user', 'rating'],
+                name='user_workshop_uniq',
+            )
+        ]
     
 
 class Sale(models.Model):
