@@ -8,6 +8,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.utils import timezone
+from django.urls import reverse
 
 
 # Create your models here.
@@ -67,6 +68,10 @@ class WorkshopRepair(models.Model):
     
     def is_opened_after(self, date: date) -> bool:
         return self.date_opened > date
+    
+    def get_absolute_url(self):
+        return reverse("workshoprepair-detail", kwargs={"pk": self.pk})
+    
 
     class Meta:
         ordering = [Lower('name')]
