@@ -554,7 +554,7 @@ def run():
     # )
     # print(comments)
 
-    workshoprepair = WorkshopRepair.objects.first()
+    workshoprepair = WorkshopRepair.objects.last()
     # user = User.objects.first()
 
     # rating = Rating.objects.create(
@@ -563,14 +563,28 @@ def run():
     #     rating=5123
     # )
 
-    WorkshopRepair.objects.create(
-        name=workshoprepair.name.upper(),
-        latitude=55,
-        longitude=55,
-        workshop_type=WorkshopRepair.TypeWorkshop.CAR,
-        date_opened=timezone.now(),
-    )
+    # WorkshopRepair.objects.create(
+    #     name=workshoprepair.name.upper(),
+    #     latitude=55,
+    #     longitude=55,
+    #     workshop_type=WorkshopRepair.TypeWorkshop.CAR,
+    #     date_opened=timezone.now(),
+    # )
 
+    # workshoprepair.nickname="asdasdasd"
+    # print("Nickname:", workshoprepair.nickname)
+    # print("Name:", workshoprepair.name)
+    # print("property:", workshoprepair.workshoprepair__name)
 
+    # workshoprepair.date_opened = timezone.now().date() - timezone.timedelta(999)
+    # print("Opened:", workshoprepair.date_opened)
+    # print("Property:", workshoprepair.was_opened_this_year)
+
+    now = timezone.now().date()
+
+    workshoprepair.date_opened = now
+    reference_date = now + timezone.timedelta(days=5)
+
+    print(workshoprepair.is_opened_after(reference_date))
 
     # pprint(connection.queries)
