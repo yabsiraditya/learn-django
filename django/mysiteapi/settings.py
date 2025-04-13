@@ -142,3 +142,9 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    # 'group_models': True,
+    'app_labels': ["core"],
+}
