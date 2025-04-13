@@ -1,3 +1,4 @@
+from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -6,6 +7,8 @@ from django.db.models.functions import Lower
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
+from django.utils import timezone
+from django.urls import reverse
 
 
 # Create your models here.
@@ -51,8 +54,24 @@ class WorkshopRepair(models.Model):
         choices=TypeWorkshop.choices,
     )
     capacity = models.PositiveSmallIntegerField(null=True, blank=True)
-    nickname = models.CharField(max_length=200, null=True, blank=True)
+    nickname = models.CharField(max_length=200, default='')
     comments = GenericRelation("Comment", related_query_name='workshoprepair')
+
+    @property
+    def workshoprepair__name(self):
+        return self.nickname or self.name
+
+    @property
+    def was_opened_this_year(self) -> bool:
+        current_year = timezone.now().year
+        return self.date_opened.year == current_year
+    
+    def is_opened_after(self, date: date) -> bool:
+        return self.date_opened > date
+    
+    def get_absolute_url(self):
+        return reverse("workshoprepair-detail", kwargs={"pk": self.pk})
+    
 
     class Meta:
         ordering = [Lower('name')]
@@ -119,7 +138,7 @@ class Rating(models.Model):
                 violation_error_message="Rating Invalid: Must Fall Between 1 And 5."
             ),
             models.UniqueConstraint(
-                fields=['user', 'rating'],
+                fields=['user', 'workshoprepair'],  
                 name='user_workshop_uniq',
             )
         ]

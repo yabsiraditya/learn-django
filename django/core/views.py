@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RatingForm, WorkshopForm
 from core.models import WorkshopRepair, Sale, Rating, StaffWorkshoprepair, Product
 from django.db.models import Sum, Prefetch
@@ -36,13 +36,17 @@ def index(request):
     # # context = {'workshoprepairs': workshoprepair}
     # print([r.total for r in workshoprepair])
 
-    jobs = StaffWorkshoprepair.objects.prefetch_related('staff', 'workshoprepair')
+    # jobs = StaffWorkshoprepair.objects.prefetch_related('staff', 'workshoprepair')
 
-    for job in jobs:
-        print(job.workshoprepair.name)
-        print(job.staff.name)
+    # for job in jobs:
+    #     print(job.workshoprepair.name)
+    #     print(job.staff.name)
 
-    return render(request, 'index.html')
+    context = {
+        'workshoprepairs':WorkshopRepair.objects.all()[:5]
+    }
+
+    return render(request, 'index.html', context)
 
 
 def order_product(request):
@@ -73,3 +77,7 @@ def order_product(request):
     }
 
     return render(request, 'order.html', context)
+
+def workshoprepair_detail(request, pk):
+    workshoprepair = get_object_or_404(WorkshopRepair, pk=pk)
+    return render(request, 'workshoprepair.html', {'workshoprepair':workshoprepair})

@@ -12,4 +12,11 @@
     <p>{{ratings.workshoprepair.name}} - {{ratings.rating}}</p>
 {% endfor %} {% endcomment %}
 
+    {% for workshoprepair in workshoprepairs %}
+        <a href="{{ workshoprepair.get_absolute_url }}">
+            {{ workshoprepair.name }}
+        </a>
+        <br>
+    {% endfor %}
+
 {% endblock %}
